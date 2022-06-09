@@ -1,31 +1,30 @@
-import express from 'express';
-import {
-    connectDB
-} from './config/mongodb';
-import {
-    env
-} from './config/environment'
+import express from "express";
+import { connectDB } from "./config/mongodb";
+import { env } from "./config/environment";
+import { apiV1 } from "./routes/v1";
 
-//pass yhtUOu8allg7ke3Q
+//pass CXqXN569zQhi8Pme
 
 connectDB()
-    .then(() => console.log('Connected successfully!!!'))
-    .then(() => bootServer())
-    .catch(error => {
-        console.error(error);
-        process.exit(1)
-    })
+  .then(() => console.log("Connected successfully!!!"))
+  .then(() => rootServer())
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 
-const bootServer = () => {
-    const app = express();
+const rootServer = () => {
+  const app = express();
 
-    connectDB().catch(console.log)
+  // enable req.body data
+  app.use(express.json());
 
-    app.get('/', (req, res) => {
-        res.end('<h1>Hello</h1><hr/>')
-    })
+  // use api v1
+  app.use("/v1", apiV1);
 
-    app.listen(env.PORT, env.HOST, () => {
-        console.log(`hello, this is ${env.HOST}:${env.PORT}/`)
-    })
-}
+  connectDB().catch(console.log);
+
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
+    console.log(`hello, this is ${env.APP_HOST}:${env.APP_PORT}/`);
+  });
+};
