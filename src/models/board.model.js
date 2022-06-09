@@ -103,4 +103,4 @@ const getFullBoard = async (boardId) => {
 };
 
 
-export const BoardModel = { createNew, update, findOneById, pushColumnOrder, getFullBoard };
+export const BoardModel = { createNew, update, pushColumnOrder, getFullBoard, findOneById };

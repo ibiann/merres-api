@@ -74,4 +74,4 @@ const update = async (id, data) => {
   }
 };
 
-export const ColumnModel = { columnCollectionName, createNew, findOneById, pushCardOrder, update };
+export const ColumnModel = { columnCollectionName, createNew, pushCardOrder, update, findOneById };
