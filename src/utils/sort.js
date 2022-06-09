@@ -2,7 +2,7 @@ export const mapOrder = (array, order, key) => {
   console.log({
     array,
     order,
-    key
+    key,
   });
   let sortedArray = [...array].sort((a, b) => {
     console.log(order.indexOf(a[key]), order.indexOf(b[key]));

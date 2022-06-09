@@ -1,36 +1,24 @@
-import {
-    MongoClient
-} from "mongodb";
-import {
-    env
-} from '../config/environment'
+import { MongoClient } from "mongodb";
+import { env } from "../config/environment";
 
-let dbInstance = null
+let dbInstance = null;
 
 export const connectDB = async () => {
-    const client = new MongoClient(env.MONGODB_URI, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true
-    })
+  const client = new MongoClient(env.MONGODB_URI, {
+    useUnifiedTopology: true, // sử dụng engine quản lý kết nối mới từ Mongodb driver
+    useNewUrlParser: true, //dịch code
+  });
 
-    //connecting client to server
-    await client.connect()
+  //connecting client to server
+  await client.connect();
 
-    //assign database for client
-    dbInstance = client.db(env.DATABASE_NAME)
+  //assign database for client
+  dbInstance = client.db(env.DATABASE_NAME);
+};
 
-}
-
-// get dbInstance
 
 export const getDB = () => {
-    if (!dbInstance) throw new Error("Where is your db ??? bozo")
-    return dbInstance
-}
+  if (!dbInstance) throw new Error("Where is your db ??? bozo");
+  return dbInstance;
+};
 
-// const listDatabases = async (client) => {
-//     const databasesMenu = await client.db().admin().listDatabases()
-//     console.log(databasesMenu)
-//     console.log('Your databases: ')
-//     databasesMenu.databases.forEach(db => console.log(` - ${db.name}`))
-// }
