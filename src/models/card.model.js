@@ -34,11 +34,46 @@ const createNew = async (data) => {
       boardId: ObjectId(validateValue.boardId),
       columnId: ObjectId(validateValue.columnId)
     }
-    const result = await getDB().collection(cardCollectionName).insertOne(insertValue);
+    const result = await getDB().collection(cardCollectionName).insertOne(insertValue)
+
     return result;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+const update = async (id, data) => {
+  try {
+    const updateData = { ...data }
+    if (data.boardId) updateData.boardId = ObjectId(data.boardId)
+    if (data.columnId) updateData.columnId = ObjectId(data.columnId)
+
+    const result = await getDB().collection(cardCollectionName).findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: updateDate },
+        { returnDocumnet: 'after' }
+      );
+    return result.value
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const CardModel = { cardCollectionName, createNew, findOneById };
+/**
+ * 
+ * @param {Array of string card ids} ids 
+ */
+const deleteCards = async (ids) => {
+  try {
+    const tranformIds = ids.map(i => ObjectId(i)) /* ham` map se tra ve 1 arr */
+
+    const result = await getDB().collection(cardCollectionName).updateMany(
+      { _id: { $in: tranformIds }}, // $in thuoc trong mang id muon update // change ids to ObjectId
+      { $set: { _destroy: true }}
+    )
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+export const CardModel = { cardCollectionName, createNew, update, deleteCards, findOneById };

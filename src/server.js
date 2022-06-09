@@ -5,8 +5,10 @@ import { connectDB } from "./config/mongodb";
 import { env } from "./config/environment";
 import { apiV1 } from "./routes/v1";
 
-//pass mYrerJYrdf2OWkDx
-
+// name: trungpc pass: 3m5HLI1UyIkaitv6
+// name: test pass: UZnp6F3ePfsumtUU
+// name: trunglap pass: vItfAp9Su0DS2nL7
+ 
 connectDB()
   .then(() => console.log("Connected successfully!!!"))
   .then(() => rootServer())

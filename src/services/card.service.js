@@ -19,10 +19,11 @@ const update = async (id, data) => {
     const updateData = {
       ...data,
       updatedAt: Date.now(),
-    };
-    const result = await CardModel.update(id, updateData);
+    }
+    if (updateData._id) delete updateData._id
+    const updatedCard = await CardModel.update(id, updateData)
 
-    return result;
+    return updatedCard;
   } catch (error) {
     throw new Error(error);
   }
