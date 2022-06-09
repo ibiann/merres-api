@@ -1,5 +1,8 @@
 import Joi from "joi";
+import { ObjectId } from "mongodb";
 import { getDB } from "../config/mongodb";
+import { ColumnModel } from './column.model'
+import { CardModel } from './card.model'
 
 const boardCollectionName = "boards";
 const boardCollectionSchema = Joi.object({
@@ -33,4 +36,55 @@ const createNew = async (data) => {
   }
 };
 
-export const BoardModel = { createNew, findOneById };
+/**
+ * @param {string} boardId 
+ * @param {string} columnId 
+ */
+const pushColumnOrder = async (boardId, columnId) => {
+  try {
+    const result = await getDB().collection(boardCollectionName).findOneAndUpdate(
+      { _id: ObjectId(boardId) },
+      { $push: { columnOrder: columnId }},
+      { returnDocument: 'after' }
+    )
+    return result.value
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+//using mongodb doc to query data (lookup)
+const getFullBoard = async (boardId) => {
+  try {
+    const result = await getDB().collection(boardCollectionName).aggregate([
+      {
+        $match: {
+          _id: ObjectId(boardId)
+        }
+      },
+      {
+        $lookup: {
+          from: ColumnModel.columnCollectionName, //collection name
+          localField: '_id',
+          foreignField: 'boardId',
+          as: 'columns'
+        }
+      },
+      {
+        $lookup: {
+          from: CardModel.cardCollectionName, //collection name
+          localField: '_id',
+          foreignField: 'boardId',
+          as: 'cards'
+        }
+      },
+    ]).toArray(); //tra ve gia tri la 1 array data 
+
+    return result[0] || {}
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+
+export const BoardModel = { createNew, findOneById, pushColumnOrder, getFullBoard };
