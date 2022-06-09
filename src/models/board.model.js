@@ -36,6 +36,20 @@ const createNew = async (data) => {
   }
 };
 
+const update = async (id, data) => {
+  try {
+    const updateDate = { ...data }
+    const result = await getDB().collection(boardCollectionName).findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $set: updateDate },
+        { returnDocumnet: 'after' }
+      );
+    return result.value
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 /**
  * @param {string} boardId 
  * @param {string} columnId 
@@ -58,8 +72,10 @@ const getFullBoard = async (boardId) => {
   try {
     const result = await getDB().collection(boardCollectionName).aggregate([
       {
+        //dieu kien loc ( -> lookup)
         $match: {
-          _id: ObjectId(boardId)
+          _id: ObjectId(boardId),
+          _destroy: false
         }
       },
       {
@@ -87,4 +103,4 @@ const getFullBoard = async (boardId) => {
 };
 
 
-export const BoardModel = { createNew, findOneById, pushColumnOrder, getFullBoard };
+export const BoardModel = { createNew, update, findOneById, pushColumnOrder, getFullBoard };
