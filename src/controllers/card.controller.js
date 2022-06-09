@@ -8,7 +8,7 @@ const createNew = async (req, res) => {
     res.status(HttpStatusCode.OK).json(result);
   } catch (error) {
     res.status(HttpStatusCode.INTERNAL_SERVER).json({
-      errors: error.message,
+      errors: error.message
     });
   }
 };

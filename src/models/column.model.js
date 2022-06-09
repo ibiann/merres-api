@@ -29,28 +29,46 @@ const findOneById = async (id) => {
 
 const createNew = async (data) => {
   try {
-    const value = await validateSchema(data);
-    const result = await getDB().collection(columnCollectionName).insertOne(value);
+    const validateValue = await validateSchema(data);
+    const insertValue = {
+      ...validateValue,
+      boardId: ObjectId(validateValue.boardId)
+    }
+    const result = await getDB().collection(columnCollectionName).insertOne(insertValue);
     return result;
   } catch (error) {
     throw new Error(error);
   }
 };
 
+/**
+ * @param {string} columnId
+ * @param {string} cardId
+ */
+ const pushCardOrder = async (columnId, cardId) => {
+  try {
+    const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
+      { _id: ObjectId(columnId) },
+      { $push: { cardOrder: cardId }},
+      { returnDocumnet: 'after' }
+    )
+    return result.value
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 const update = async (id, data) => {
   try {
-    const result = await getDB()
-      .collection(columnCollectionName)
-      .findOneAndUpdate(
+    const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
         { _id: ObjectId(id) },
         { $set: data },
-        { returnOriginal: false }
+        { returnDocumnet: 'after' }
       );
-    console.log(result);
-    return result.value;
+    return result.value
   } catch (error) {
     throw new Error(error);
   }
 };
 
-export const ColumnModel = { createNew, findOneById, update };
+export const ColumnModel = { columnCollectionName, createNew, findOneById, pushCardOrder, update };
