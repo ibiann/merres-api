@@ -21,10 +21,13 @@ const update = async (id, data) => {
     const updateData = {
       ...data,
       updatedAt: Date.now(),
-    };
-    const result = await ColumnModel.update(id, updateData);
+    }
+    if (updateData._id) delete updateData._id
+    if (updateData.cards) delete updateData.cards
 
-    return result;
+    const updatedColumn = await ColumnModel.update(id, updateData);
+
+    return updatedColumn;
   } catch (error) {
     throw new Error(error);
   }

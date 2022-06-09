@@ -60,9 +60,13 @@ const createNew = async (data) => {
 
 const update = async (id, data) => {
   try {
+    const updateDate = {
+      ...data,
+      boardId: ObjectId(data.boardId) //ghi de
+    }
     const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
         { _id: ObjectId(id) },
-        { $set: data },
+        { $set: updateDate },
         { returnDocumnet: 'after' }
       );
     return result.value
