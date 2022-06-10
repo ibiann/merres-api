@@ -38,10 +38,10 @@ const createNew = async (data) => {
 
 const update = async (id, data) => {
   try {
-    const updateDate = { ...data }
+    const updateData = { ...data }
     const result = await getDB().collection(boardCollectionName).findOneAndUpdate(
         { _id: ObjectId(id) },
-        { $set: updateDate },
+        { $set: updateData },
         { returnDocumnet: 'after' }
       );
     return result.value
