@@ -29,7 +29,7 @@ const update = async (id, data) => {
 
     if (updatedColumn._destroy) {
       // deleting cards in column
-      CardModel.deleteCards(updatedColumn.cardOrder)
+      CardModel.deleteMany(updatedColumn.cardOrder)
     }
 
     return updatedColumn;

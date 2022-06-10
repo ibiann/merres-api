@@ -50,7 +50,7 @@ const update = async (id, data) => {
 
     const result = await getDB().collection(cardCollectionName).findOneAndUpdate(
         { _id: ObjectId(id) },
-        { $set: updateDate },
+        { $set: updateData },
         { returnDocumnet: 'after' }
       );
     return result.value
@@ -63,7 +63,7 @@ const update = async (id, data) => {
  * 
  * @param {Array of string card ids} ids 
  */
-const deleteCards = async (ids) => {
+const deleteMany = async (ids) => {
   try {
     const tranformIds = ids.map(i => ObjectId(i)) /* ham` map se tra ve 1 arr */
 
@@ -71,9 +71,11 @@ const deleteCards = async (ids) => {
       { _id: { $in: tranformIds }}, // $in thuoc trong mang id muon update // change ids to ObjectId
       { $set: { _destroy: true }}
     )
+
+    return result
   } catch (error) {
     throw new Error(error)
   }
 }
 
-export const CardModel = { cardCollectionName, createNew, update, deleteCards, findOneById };
+export const CardModel = { cardCollectionName, createNew, update, deleteMany, findOneById };
