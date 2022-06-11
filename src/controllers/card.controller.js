@@ -17,7 +17,7 @@ const update = async (req, res) => {
   try {
     const { id } = req.params; //destructuring //return về một array hay object rest api
     const result = await CardService.update(id, req.body);
-    console.log(result);
+    
     res.status(HttpStatusCode.OK).json(result);
   } catch (error) {
     res.status(HttpStatusCode.INTERNAL_SERVER).json({

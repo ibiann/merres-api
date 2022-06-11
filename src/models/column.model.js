@@ -50,7 +50,7 @@ const createNew = async (data) => {
     const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
       { _id: ObjectId(columnId) },
       { $push: { cardOrder: cardId }},
-      { returnDocumnet: 'after' }
+      { returnDocument: 'after' }
     )
     return result.value
   } catch (error) {
@@ -66,7 +66,7 @@ const update = async (id, data) => {
     const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
         { _id: ObjectId(id) },
         { $set: updateData },
-        { returnDocumnet: 'after' }
+        { returnDocument: 'after' }
       );
     return result.value
   } catch (error) {
