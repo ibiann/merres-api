@@ -25,6 +25,9 @@ const rootServer = () => {
   // enable req.body data
   app.use(express.json());
 
+  // use api auth
+  app.use('/v1/auth', apiUserAuth);
+
   // use api v1
   app.use("/v1", apiV1);
 

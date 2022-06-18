@@ -3,6 +3,7 @@ import { HttpStatusCode } from "../../utils/constants";
 import { boardRoutes } from "./board.route";
 import { columnRoutes } from "./column.route";
 import { cardRoutes } from "./card.route";
+import { userRoutes } from "./user.route";
 
 const router = express.Router();
 
@@ -13,6 +14,8 @@ router.get("/status", (req, res) =>
     status: "Ok",
   })
 );
+/** Call User Auth*/
+router.use("/user", userRoutes)
 
 /** Call Board Api */
 router.use("/boards", boardRoutes);
